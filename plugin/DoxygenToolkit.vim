@@ -806,7 +806,7 @@ function! <SID>DoxygenCommentFunc()
       exec "normal A "
       exec "normal $md"
     else
-      let s:execCommand = "o"
+      let s:execCommand = "o\<ESC>i"
     endif
     exec "normal ".s:execCommand.s:endCommentTag
   endif
@@ -1004,7 +1004,14 @@ function! s:ParseParameter( param )
   let l:firstIndex = stridx( a:param, '(' )
 
   if( l:firstIndex == -1 )
-    let l:paramName =  split( a:param, '[[:blank:]*&]' )[-1]
+    let l:stripparam = substitute( a:param, "[[:blank:]]*$", "", "g")
+    let l:paramName =  split( stripparam, '[[:blank:]*&]' )[-1]
+    "if( strlen( l:paramName ) == 0 )
+    "  let l:paramNameList =  split( a:param, '[[:blank:]*&]' )
+    "  for iparam in l:paramNameList
+    "    call s:WarnMsg( '[DEBUG]:OUT_EmptyName'.iparam )
+    "  endfor
+    "endif
   else
     if( l:firstIndex != 0 )
       let l:startIndex = 0
